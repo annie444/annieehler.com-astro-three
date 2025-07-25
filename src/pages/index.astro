@@ -2,66 +2,181 @@
 // Component imports
 import { Layout } from "~/components/dom"
 import ThemeToggle from "~/components/dom/common/ThemeToggle"
+import TextType, { TextTypeProps } from "~/components/canvas/TextType"
+import Break, { BreakProps } from "~/components/dom/common/Break.svelte"
+
+let delay = 0
+
+type Color =
+	| "pink"
+	| "red"
+	| "cyan"
+	| "green"
+	| "orange"
+	| "purple"
+	| "yellow"
+	| "fg"
+	| "comment"
+	| "bg"
+	| "line"
+
+const colors: Record<Color, string> = {
+	pink: "#FF79C6",
+	red: "#FF5555",
+	cyan: "#8BE9FD",
+	green: "#50FA7B",
+	orange: "#FFB86C",
+	purple: "#BD93F9",
+	yellow: "#F1FA8C",
+	fg: "#F8F8F2",
+	bg: "#282A36",
+	comment: "#6272A4",
+	line: "#44475A"
+}
+
+const toHex = (color: Color): string => colors[color]
+
+const line = (
+	text: string,
+	color: Color,
+	as: "div" | "span" | "a" | "br" = "div",
+	href?: string
+): TextTypeProps => {
+	const hex = toHex(color)
+	let classes = "font-mono text-2xl md:text-3xl"
+	if (as === "a") {
+		classes += ` hover:underline hover:text-[${toHex("yellow")}] hover:decoration-[${hex}]`
+	}
+	const props: TextTypeProps = {
+		className: classes,
+		showCursor: false,
+		cursorCharacter: "▎",
+		cursorBlinkDuration: 300,
+		cursorClassName: "text-[#6272A4]",
+		text: text,
+		as: as,
+		typingSpeed: 50,
+		initialDelay: delay,
+		pauseDuration: 0,
+		loop: false,
+		textColors: [hex],
+		startOnVisible: true,
+		reverseMode: false,
+		href: href
+	}
+	delay += 50 * text.length
+	return props
+}
+
+const breakDelay = (height: number = 1): BreakProps => {
+	const brk = delay
+	delay += 50 * height
+	return {
+		height: height,
+		delay: brk
+	}
+}
 ---
 
 <Layout title="Astro PWA Starter">
 	<section class="p-6 flex-1 flex flex-col justify-between min-h-screen py-20">
 		<ThemeToggle client:only="react" />
 		<!-- Welcome -->
-		<div class="max-w-xl mx-auto flex flex-col flex-1 space-y-10">
-			<div class="space-y-2 text-center">
-				<h1 class="text-4xl font-semibold">🟢 astro-pwa-starter</h1>
-				<p class="italic">
-					It works! Check out <span class="p-1 rounded-lg bg-gray-100 font-mono"
-						>/src/pages</span
-					> to get started.
-				</p>
-			</div>
-			<div>
-				<ul class="grid md:grid-cols-2 gap-4">
-					<li>
-						<a
-							href="https://github.com/shaunchander/astro-pwa-starter#-getting-started-guide"
-							class="p-6 rounded-2xl border border-gray-500 flex flex-col text-center hover:bg-blue-500 focus:bg-blue-500 hover:text-white duration-300 ease-in-out transition hover:border-blue-500 focus:border-blue-500"
-						>
-							<span class="text-xl font-medium">🚀 Getting started guide</span>
-						</a>
-					</li>
-					<li>
-						<a
-							href="https://github.com/shaunchander/astro-pwa-starter#-documentation"
-							class="p-6 rounded-2xl border border-gray-500 flex flex-col text-center hover:bg-blue-500 focus:bg-blue-500 hover:text-white duration-300 ease-in-out transition hover:border-blue-500 focus:border-blue-500"
-						>
-							<span class="text-xl font-medium">📖 Documentation</span>
-						</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-
-		<!-- Twitter -->
-		<div class="flex justify-center">
-			<a
-				href="https://twitter.com/shaunchander"
-				target="_blank"
-				rel="noopener noreferrer"
-				class="relative inline-flex items-center rounded-full bg-gray-100 p-4 transition duration-300 ease-in-out hover:-translate-y-2 focus:-translate-y-2 group hover:text-white focus:text-white"
+		<div class="w-full h-full m-auto flex flex-col flex-1">
+			<div
+				class="dark:bg-[#282A36] bg-[#282A36] m-auto space-y-10 text-left p-8"
 			>
-				<div class="flex items-center space-x-4 relative z-10">
-					<img
-						src="https://pbs.twimg.com/profile_images/1626068871034667008/tc7dNg2B_400x400.jpg"
-						width={48}
-						height={48}
-						class="rounded-full object-cover"
-						alt=""
-					/>
-					<span class="text-lg font-bold">Built by @shaunchander</span>
-				</div>
-				<div
-					class="inline-block rounded-full absolute inset-0 bg-gradient-to-tr from-[#07f49e] to-[#42047e] opacity-0 group-hover:opacity-100 group-focus:opacity-100 duration-300 ease-in-out transition"
-				>
-				</div>
-			</a>
+				<TextType {...line("use ", "pink", "span")} client:load />
+				<TextType {...line("dev", "orange", "span")} client:load />
+				<TextType {...line("::{", "fg", "span")} client:load />
+				<TextType {...line("MLDev", "cyan", "span")} client:load />
+				<TextType {...line(", ", "fg", "span")} client:load />
+				<TextType {...line("DevOps", "cyan", "span")} client:load />
+				<TextType {...line(", ", "fg", "span")} client:load />
+				<TextType {...line("SoftwareEng", "cyan", "span")} client:load />
+				<TextType {...line("};", "fg", "span")} client:load />
+				<Break {...breakDelay(2)} client:load />
+				<TextType {...line("#", "green", "span")} client:load />
+				<TextType {...line("[", "fg", "span")} client:load />
+				<TextType {...line("derive", "green", "span")} client:load />
+				<TextType {...line("(", "pink", "span")} client:load />
+				<TextType {...line("MLDev", "cyan", "span")} client:load />
+				<TextType {...line(", ", "fg", "span")} client:load />
+				<TextType {...line("DevOps", "cyan", "span")} client:load />
+				<TextType {...line(", ", "fg", "span")} client:load />
+				<TextType {...line("SoftwareEng", "cyan", "span")} client:load />
+				<TextType {...line(")", "pink", "span")} client:load />
+				<TextType {...line("]", "fg", "span")} client:load />
+				<Break {...breakDelay(1)} client:load />
+				<TextType {...line("pub struct ", "pink", "span")} client:load />
+				<TextType {...line("AnnieEhler ", "cyan", "span")} client:load />
+				<TextType {...line("{", "fg", "span")} client:load />
+				<Break {...breakDelay(1)} client:load />
+				<TextType {...line("    pub ", "pink", "span")} client:load />
+				<TextType {...line("blog", "purple", "a", "/posts")} client:load />
+				<TextType {...line(": ", "fg", "span")} client:load />
+				<TextType {...line("Vec", "cyan", "span")} client:load />
+				<TextType {...line("<", "pink", "span")} client:load />
+				<TextType
+					{...line("BlogPost", "cyan", "a", "/posts/latest")}
+					client:load
+				/>
+				<TextType {...line(">", "pink", "span")} client:load />
+				<TextType {...line(",", "fg", "span")} client:load />
+				<Break {...breakDelay(1)} client:load />
+				<TextType {...line("    pub ", "pink", "span")} client:load />
+				<TextType {...line("work", "purple", "a", "/work")} client:load />
+				<TextType {...line(": {", "fg", "span")} client:load />
+				<Break {...breakDelay(1)} client:load />
+				<TextType {...line("        pub ", "pink", "span")} client:load />
+				<TextType
+					{...line("experience", "orange", "a", "/work#experience")}
+					client:load
+				/>
+				<TextType {...line(": ", "fg", "span")} client:load />
+				<TextType {...line("Vec", "cyan", "span")} client:load />
+				<TextType {...line("<", "pink", "span")} client:load />
+				<TextType
+					{...line("Job", "cyan", "a", "/work#experience")}
+					client:load
+				/>
+				<TextType {...line(">", "pink", "span")} client:load />
+				<TextType {...line(",", "fg", "span")} client:load />
+				<Break {...breakDelay(1)} client:load />
+				<TextType {...line("        pub ", "pink", "span")} client:load />
+				<TextType
+					{...line("skills", "orange", "a", "/work#skills")}
+					client:load
+				/>
+				<TextType {...line(": ", "fg", "span")} client:load />
+				<TextType {...line("Vec", "cyan", "span")} client:load />
+				<TextType {...line("<", "pink", "span")} client:load />
+				<TextType {...line("Skill", "cyan", "a", "/work#skills")} client:load />
+				<TextType {...line(">", "pink", "span")} client:load />
+				<TextType {...line(",", "fg", "span")} client:load />
+				<Break {...breakDelay(1)} client:load />
+				<TextType {...line("    },", "fg", "span")} client:load />
+				<Break {...breakDelay(1)} client:load />
+				<TextType {...line("    pub ", "pink", "span")} client:load />
+				<TextType
+					{...line("projects", "purple", "a", "/projects")}
+					client:load
+				/>
+				<TextType {...line(": ", "fg", "span")} client:load />
+				<TextType {...line("VecDeque", "cyan", "span")} client:load />
+				<TextType {...line("<", "pink", "span")} client:load />
+				<TextType {...line("Project", "cyan", "a", "/projects")} client:load />
+				<TextType {...line(">", "pink", "span")} client:load />
+				<TextType {...line(",", "fg", "span")} client:load />
+				<Break {...breakDelay(1)} client:load />
+				<TextType {...line("    pub ", "pink", "span")} client:load />
+				<TextType {...line("contact", "purple", "a", "/contact")} client:load />
+				<TextType {...line(": ", "fg", "span")} client:load />
+				<TextType {...line("Email", "cyan", "a", "/contact")} client:load />
+				<TextType {...line(",", "fg", "span")} client:load />
+				<Break {...breakDelay(1)} client:load />
+				<TextType {...line("}", "fg", "span")} client:load />
+			</div>
 		</div>
 	</section>
 </Layout>

@@ -8,7 +8,8 @@
 		"allowSyntheticDefaultImports": true,
 		"allowJs": true,
 		"types": [
-			"astro/client"
+			"astro/client",
+			"vite-plugin-pwa/client"
 		],
 		"baseUrl": ".",
 		"paths": {

@@ -13,6 +13,8 @@ import glsl from "vite-plugin-glsl"
 import { manifest, seoConfig } from "./src/utils/seoConfig"
 import tailwindcss from "@tailwindcss/vite"
 
+import svelte from "@astrojs/svelte"
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
@@ -29,26 +31,24 @@ export default defineConfig({
 			JavaScript: true,
 			SVG: false,
 			Logger: 1
-		})
+		}),
+		AstroPWA({
+			registerType: "autoUpdate",
+			manifest,
+			workbox: {
+				globDirectory: "dist",
+				globPatterns: [
+					"**/*.{js,css,svg,png,jpg,jpeg,gif,webp,woff,woff2,ttf,eot,ico}"
+				],
+				// Don't fallback on document based (e.g. `/some-page`) requests
+				// This removes an errant console.log message from showing up.
+				navigateFallback: "/404"
+			}
+		}),
+		svelte()
 	],
 	vite: {
-		plugins: [
-			AstroPWA({
-				registerType: "autoUpdate",
-				manifest,
-				workbox: {
-					globDirectory: "dist",
-					globPatterns: [
-						"**/*.{js,css,svg,png,jpg,jpeg,gif,webp,woff,woff2,ttf,eot,ico}"
-					],
-					// Don't fallback on document based (e.g. `/some-page`) requests
-					// This removes an errant console.log message from showing up.
-					navigateFallback: null
-				}
-			}),
-			glsl(),
-			tailwindcss()
-		],
+		plugins: [tailwindcss(), glsl()],
 		ssr: {
 			noExternal: ["usehooks-ts"]
 		},
