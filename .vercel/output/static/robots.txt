@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://annieehler-com-astro-three.vercel.app/sitemap-index.xml
