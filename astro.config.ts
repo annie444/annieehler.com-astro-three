@@ -15,47 +15,53 @@ import tailwindcss from "@tailwindcss/vite"
 
 import svelte from "@astrojs/svelte"
 
+import vercel from "@astrojs/vercel";
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
-	site: SITE.origin,
-	base: SITE.basePathname,
-	trailingSlash: SITE.trailingSlash ? "always" : "never",
-	integrations: [
-		react(),
-		sitemap(),
-		compress({
-			CSS: true,
-			HTML: true,
-			Image: false,
-			JavaScript: true,
-			SVG: false,
-			Logger: 1
-		}),
-		AstroPWA({
-			registerType: "autoUpdate",
-			manifest,
-			workbox: {
-				globDirectory: "dist",
-				globPatterns: [
-					"**/*.{js,css,svg,png,jpg,jpeg,gif,webp,woff,woff2,ttf,eot,ico}"
-				],
-				// Don't fallback on document based (e.g. `/some-page`) requests
-				// This removes an errant console.log message from showing up.
-				navigateFallback: "/404"
-			}
-		}),
-		svelte()
+  site: SITE.origin,
+  base: SITE.basePathname,
+  trailingSlash: SITE.trailingSlash ? "always" : "never",
+
+  integrations: [
+      react(),
+      sitemap(),
+      compress({
+          CSS: true,
+          HTML: true,
+          Image: false,
+          JavaScript: true,
+          SVG: false,
+          Logger: 1
+      }),
+      AstroPWA({
+          registerType: "autoUpdate",
+          manifest,
+          workbox: {
+              globDirectory: "dist",
+              globPatterns: [
+                  "**/*.{js,css,svg,png,jpg,jpeg,gif,webp,woff,woff2,ttf,eot,ico}"
+              ],
+              // Don't fallback on document based (e.g. `/some-page`) requests
+              // This removes an errant console.log message from showing up.
+              navigateFallback: "/404"
+          }
+      }),
+      svelte()
 	],
-	vite: {
-		plugins: [tailwindcss(), glsl()],
-		ssr: {
-			noExternal: ["usehooks-ts"]
-		},
-		resolve: {
-			alias: {
-				"~": path.resolve(__dirname, "./src")
-			}
-		}
-	}
+
+  vite: {
+      plugins: [tailwindcss(), glsl()],
+      ssr: {
+          noExternal: ["usehooks-ts"]
+      },
+      resolve: {
+          alias: {
+              "~": path.resolve(__dirname, "./src")
+          }
+      }
+	},
+
+  adapter: vercel()
 })

@@ -3,14 +3,13 @@ import defaultImage from "./assets/img/default.png"
 const CONFIG = {
 	name: "AstroWind",
 
-	origin: "https://astrowind.vercel.app",
+	origin: "https://annieehler-com-astro-three.vercel.app",
 	basePathname: "/",
 	trailingSlash: false,
 
-	title:
-		"AstroWind — Free template for create a website with Astro + Tailwind CSS",
+	title: "Annie Ehler - Blog, Portfolio & Online Resume",
 	description:
-		"🚀 Suitable for Startups, Small Business, Sass Websites, Professional Portfolios, Marketing Websites, Landing Pages & Blogs.",
+		"Annie Ehler is a web developer and designer based in Los Angeles. This is her personal blog, portfolio, and online resume.",
 	defaultImage: defaultImage,
 
 	defaultTheme: "system", // Values: "system" | "light" | "dark" | "light:only" | "dark:only"
@@ -22,7 +21,7 @@ const CONFIG = {
 		year: "numeric",
 		month: "short",
 		day: "numeric",
-		timeZone: "UTC"
+		timeZone: "America/Los_Angeles"
 	}),
 
 	googleAnalyticsId: false, // or "G-XXXXXXXXXX",
@@ -33,7 +32,7 @@ const CONFIG = {
 		postsPerPage: 4,
 
 		post: {
-			permalink: "/%slug%", // Variables: %slug%, %year%, %month%, %day%, %hour%, %minute%, %second%, %category%
+			permalink: "/posts/%slug%", // Variables: %slug%, %year%, %month%, %day%, %hour%, %minute%, %second%, %category%
 			noindex: false,
 			disabled: false
 		},

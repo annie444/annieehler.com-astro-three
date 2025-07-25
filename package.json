@@ -12,6 +12,7 @@
 	"dependencies": {
 		"@astrojs/react": "^4.3.0",
 		"@astrojs/svelte": "^7.1.0",
+		"@astrojs/vercel": "^8.2.3",
 		"@radix-ui/react-slot": "^1.2.3",
 		"@react-spring/web": "^10.0.1",
 		"@react-three/drei": "^10.6.0",
